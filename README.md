@@ -7,11 +7,11 @@ This project was created as a portfolio piece to showcase my skills in **full-st
 
 ## Features
 
-- ** User Authentication & Authorization** – JWT-based secure login and registration.
-- ** Profile Management** – Edit profile details and upload photos.
-- ** Photo Uploads** – Integrated with cloud storage.
-- ** Member Search & Filtering** – Filter users based on preferences.
-- ** Real-Time Messaging** – Built with SignalR for instant chat.
+- **User Authentication & Authorization** – JWT-based secure login and registration.
+- **Profile Management** – Edit profile details and upload photos.
+- **Photo Uploads** – Integrated with cloud storage.
+- **Member Search & Filtering** – Filter users based on preferences.
+- **Real-Time Messaging** – Built with SignalR for instant chat.
 
 ## Tech Stack
 
