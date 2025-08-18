@@ -8,7 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
-import { NgIf } from '@angular/common';
 import { TextInputComponent } from '../_forms/text-input/text-input.component';
 import { DatePickerComponent } from '../_forms/date-picker/date-picker.component';
 import { Router } from '@angular/router';
@@ -16,7 +15,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, TextInputComponent, DatePickerComponent],
+  imports: [ReactiveFormsModule, TextInputComponent, DatePickerComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
@@ -72,9 +71,24 @@ export class RegisterComponent implements OnInit {
   register() {
     const dob = this.getDateOnly(this.registerForm.get('dateOfBirth')?.value);
     this.registerForm.patchValue({ dateOfBirth: dob });
+
     this.accountService.register(this.registerForm.value).subscribe({
       next: (_) => this.router.navigateByUrl('/members'),
-      error: (error) => (this.validationErrors = error),
+      error: (err) => {
+        if (err.error?.errors) {
+          this.validationErrors = Object.values(
+            err.error.errors
+          ).flat() as string[];
+        } else if (Array.isArray(err.error)) {
+          this.validationErrors = (err.error as { description: string }[]).map(
+            (e) => e.description
+          );
+        } else if (typeof err.error === 'string') {
+          this.validationErrors = [err.error];
+        } else {
+          this.validationErrors = ['An unexpected error occurred'];
+        }
+      },
     });
   }
 

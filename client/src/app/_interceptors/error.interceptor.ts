@@ -7,6 +7,8 @@ import { catchError } from 'rxjs';
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const toastr = inject(ToastrService);
+  const skipToastr = req.headers.get('skip-toastr');
+
   return next(req).pipe(
     catchError((error) => {
       if (error) {
@@ -20,12 +22,12 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
                 }
               }
               throw modalStateErrors.flat();
-            } else {
+            } else if(!skipToastr) {
               toastr.error(error.error, error.status);
             }
             break;
           case 401:
-            toastr.error('Unauthorised', error.status);
+           if(!skipToastr) toastr.error('Unauthorised', error.status);
             break;
           case 404:
             router.navigateByUrl('/not-found');
@@ -37,7 +39,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             router.navigateByUrl('/server-error', navigationExtras);
             break;
           default:
-            toastr.error('Something unexpected went wrong');
+            if(!skipToastr) toastr.error('Something unexpected went wrong');
             break;
         }
       }

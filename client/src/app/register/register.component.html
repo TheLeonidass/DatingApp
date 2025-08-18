@@ -69,7 +69,7 @@
   >
   </app-text-input>
 
-  @if (validationErrors) {
+  @if (validationErrors?.length) {
   <div class="alert alert-danger text-start">
     <ul>
       @for (error of validationErrors; track $index) {
